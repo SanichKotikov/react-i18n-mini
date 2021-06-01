@@ -6,19 +6,17 @@ import { parser } from '../parser';
 import { I18nContext } from '../context';
 
 interface Props {
-  language?: string;
-  defaultLang: string;
+  language: string;
   locales?: Readonly<Record<string, I18nMessages>>;
   children: ReactNode;
 }
 
 export const I18nProvider = memo<Props>(function I18nProvider({
   language,
-  defaultLang,
   locales,
   children,
 }) {
-  const [lang, setLang] = useState<string>(language || defaultLang);
+  const [lang, setLang] = useState<string>(language);
 
   const _locales = useRef<Record<string, Readonly<I18nMessages>>>(locales || { [lang]: {} });
   const [messages, setMessages] = useState<Readonly<I18nMessages>>(locales?.[lang] || {});
@@ -41,7 +39,6 @@ export const I18nProvider = memo<Props>(function I18nProvider({
     <I18nContext.Provider
       value={{
         language: lang,
-        defaultLang,
         locales: messages,
         _locales,
         setLanguage,

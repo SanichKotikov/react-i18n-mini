@@ -4,7 +4,6 @@ import { noop } from './utils';
 
 export const I18nContext = createContext<I18n>({
   language: '',
-  defaultLang: '',
   locales: {},
   _locales: { current: {} },
   setLanguage: noop(),

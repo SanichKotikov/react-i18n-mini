@@ -29,7 +29,6 @@ export interface I18nMessage {
 
 export interface I18n {
   language: string;
-  defaultLang: string;
   locales: Readonly<I18nMessages>;
   _locales: MutableRefObject<Readonly<Record<string, I18nMessages>>>;
   setLanguage: (language: string) => void;
