@@ -31,7 +31,7 @@ function App() {
 ```typescript jsx
 <Text
   id="some.id"
-  message="{count, plural, =0 {No items} one {You have one item} other {You have {count} items}}."
+  message="{count, plural, =0 {No items} one {One item} other {{count} items}}."
   count={19999}
 />
 ```
@@ -41,12 +41,12 @@ function App() {
 ```typescript jsx
 <Text
   id="some.id"
-  message="Last login {date}"
-  date={new Date()}
+  message="Last login {datetime}"
+  datetime={new Date()}
 />
 ```
 
-Note: use `{date, date}` for number or string value.
+Note: use `{datetime, date}` for number or string values.
 
 ## useI18n
 
