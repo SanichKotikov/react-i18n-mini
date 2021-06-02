@@ -1,6 +1,6 @@
 # react-i18n-mini
 
-A tiny (~1.38 kB) internationalization library for React.
+A tiny (~1.49 kB) internationalization library for React.
 
 ```bash
 npm i -S react-i18n-mini
@@ -48,13 +48,29 @@ function App() {
 
 Note: use `{datetime, date}` for number or string values.
 
+#### Number Formatting
+
+```typescript jsx
+<Numeric
+  value={9.99}
+  numberStyle="currency"
+  currency="EUR"
+/>
+```
+
 ## useI18n
 
 ```typescript jsx
 export { useI18n } from 'react-i18n-mini';
 
 function SomeComp() {
-  const { t } = useI18n();
-  return <h1>{t({ id: "some_page.title", message: "Page title" })}</h1>
+  const { t, formatNumber } = useI18n();
+
+  return (
+    <div>
+      <h1>{t({ id: "some_page.title", message: "Page title" })}</h1>
+      <div>{formatNumber(99999.9, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+    </div>
+  );
 }
 ```

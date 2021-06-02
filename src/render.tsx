@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import React, { createElement, Fragment } from 'react';
 import type { I18nValues, Template, TemplateMessage } from './types';
 import { TemplateType } from './types';
+import { formatDateTime, formatNumber } from './format';
 import { isDate, isFunc, isNumber, isString } from './utils';
 
 function format(
@@ -19,11 +20,11 @@ function format(
   switch (true) {
     case type === undefined && isNumber(value):
     case type === TemplateType.number && isNumber(value): {
-      return new Intl.NumberFormat(locale).format(value as number);
+      return formatNumber(value as number, locale); // TODO options
     }
     case type === undefined && isDate(value):
     case type === TemplateType.date && (isString(value) || isNumber(value) || isDate(value)):
-      return new Intl.DateTimeFormat(locale).format(new Date(value as number));
+      return formatDateTime(new Date(value as number), locale); // TODO options
     case (type === TemplateType.tag && options !== undefined): {
       if (isFunc(value)) return value(options as any);
       if (isString(value)) return createElement(value, null, render(locale, options as any, props));

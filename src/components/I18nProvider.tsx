@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { memo, useCallback, useRef, useState } from 'react';
-import { I18nMessage, I18nMessages, I18nValues } from '../types';
+import { I18nMessage, I18nMessages, I18nValues, NumberOptions } from '../types';
+import { formatNumber } from '../format';
 import { render } from '../render';
 import { parser } from '../parser';
 import { I18nContext } from '../context';
@@ -21,10 +22,6 @@ export const I18nProvider = memo<Props>(function I18nProvider({
   const _locales = useRef<Record<string, Readonly<I18nMessages>>>(locales || { [lang]: {} });
   const [messages, setMessages] = useState<Readonly<I18nMessages>>(locales?.[lang] || {});
 
-  const t = useCallback((msg: Readonly<I18nMessage>, props?: Readonly<I18nValues>): ReactNode => {
-    return render(lang, parser(messages[msg.id] || msg.message), props);
-  }, [lang, messages]);
-
   const setLocales = useCallback((value: Readonly<I18nMessages>) => {
     _locales.current = { ..._locales.current, [lang]: { ..._locales.current[lang], ...value } };
     setMessages((state) => ({ ...state, ...value }));
@@ -35,6 +32,14 @@ export const I18nProvider = memo<Props>(function I18nProvider({
     setMessages(_locales.current[value] || {});
   }, []);
 
+  const translate = useCallback((msg: Readonly<I18nMessage>, props?: Readonly<I18nValues>): ReactNode => {
+    return render(lang, parser(messages[msg.id] || msg.message), props);
+  }, [lang, messages]);
+
+  const formatNum = useCallback((value: number, options?: Readonly<NumberOptions>): string => {
+    return formatNumber(value, lang, options);
+  }, [lang]);
+
   return (
     <I18nContext.Provider
       value={{
@@ -43,7 +48,8 @@ export const I18nProvider = memo<Props>(function I18nProvider({
         _locales,
         setLanguage,
         setLocales,
-        t,
+        t: translate,
+        formatNumber: formatNum,
       }}
     >
       {children}
