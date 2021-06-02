@@ -1,6 +1,6 @@
 # react-i18n-mini
 
-A tiny (~1.81 kB) internationalization library for React.
+A tiny (~1.82 kB) internationalization library for React.
 
 ```bash
 npm i -S react-i18n-mini
@@ -84,7 +84,22 @@ function SomeComp() {
 }
 ```
 
-#### Using presets
+#### Define Messages
+
+```typescript jsx
+export { useI18n, defineMessages } from 'react-i18n-mini';
+
+const messages = defineMessages({
+  title: { id: "some_page.title", message: "Page title" },
+});
+
+function SomeComp() {
+  const { t } = useI18n();
+  return <h1>{t(messages.title)}</h1>;
+}
+```
+
+#### Using Presets
 
 ```typescript jsx
 export { I18nPresets, I18nProvider, Text } from 'react-i18n-mini';

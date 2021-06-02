@@ -38,7 +38,7 @@ export interface I18nValues {
   [key: string]: I18nValue;
 }
 
-export interface I18nMessages {
+export interface I18nLocales {
   [key: string]: string;
 }
 
@@ -47,13 +47,15 @@ export interface I18nMessage {
   message: string;
 }
 
+export type I18nMessages = Readonly<Record<string, I18nMessage>>;
+
 export interface I18n {
   language: string;
-  locales: Readonly<I18nMessages>;
-  _locales: MutableRefObject<Readonly<Record<string, I18nMessages>>>;
+  locales: Readonly<I18nLocales>;
+  _locales: MutableRefObject<Readonly<Record<string, I18nLocales>>>;
   _presets: MutableRefObject<Readonly<I18nPresets>>;
   setLanguage: (language: string) => void;
-  setLocales: (locales: I18nMessages) => void;
+  setLocales: (locales: I18nLocales) => void;
   t: (message: I18nMessage, values?: Readonly<I18nValues>) => ReactNode;
   formatNumber: (value: number, options?: string | Readonly<NumberOptions>) => string;
   formatDateTime: (date: number | string | Date, options?: string | Readonly<DateTimeOptions>) => string;

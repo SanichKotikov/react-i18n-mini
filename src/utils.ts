@@ -1,4 +1,4 @@
-import type { I18nRenderValue, I18nValue } from './types';
+import type { I18nMessages, I18nRenderValue, I18nValue } from './types';
 
 export function noop(): () => undefined;
 export function noop<T>(returnValue: T): () => T;
@@ -24,4 +24,9 @@ export function isFunc(value: I18nValue): value is I18nRenderValue {
 
 export function isEmpty<T extends object>(value: T): boolean {
   return (Object.keys(value) as (keyof T)[]).every((prop) => !value[prop]);
+}
+
+// Just an anchor for extract function
+export function defineMessages<T extends I18nMessages, K extends keyof T>(messages: T): T {
+  return messages;
 }
