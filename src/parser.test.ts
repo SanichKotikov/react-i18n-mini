@@ -15,6 +15,8 @@ describe('parser', () => {
       .toEqual<TemplateMessage>([['count', TemplateType.number, 'format'], ' messages']);
     expect(parser('Last login {date}')).toEqual<TemplateMessage>(['Last login ', ['date']]);
     expect(parser('Last login {date, date}')).toEqual<TemplateMessage>(['Last login ', ['date', TemplateType.date]]);
+    expect(parser('Last login {date, date, format}'))
+      .toEqual<TemplateMessage>(['Last login ', ['date', TemplateType.date, 'format']]);
   });
 
   it('should parse plural', function() {
@@ -44,6 +46,11 @@ describe('parser', () => {
   });
 
   it('should parse tags', function() {
+    expect(parser('First line.<br/>Second line.'))
+      .toEqual<TemplateMessage>(['First line.', ['br', TemplateType.tag], 'Second line.']);
+    expect(parser('First line.<br/>Second line with <b>highlighted text</b>.')).toEqual<TemplateMessage>([
+      'First line.', ['br', TemplateType.tag], 'Second line with ', ['b', TemplateType.tag, 'highlighted text'], '.',
+    ]);
     expect(parser('<b>Few</b> messages')).toEqual<TemplateMessage>([['b', TemplateType.tag, 'Few'], ' messages']);
     expect(parser('<link>Click here</link> to get more information.'))
       .toEqual<TemplateMessage>([['link', TemplateType.tag, 'Click here'], ' to get more information.']);

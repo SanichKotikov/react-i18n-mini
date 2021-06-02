@@ -28,9 +28,15 @@ function format(
     case type === TemplateType.date && (isString(value) || isNumber(value) || isDate(value)):
       const formatOptions = isString(options) ? presets.dateTime?.[options] : presets.dateTime?.default;
       return formatDateTime(new Date(value as number), locale, formatOptions);
+    case (type === TemplateType.tag && options === undefined): {
+      if (isFunc(value)) return value('');
+      if (value === undefined || isString(value)) return createElement(value || key);
+      return null;
+    }
     case (type === TemplateType.tag && options !== undefined): {
       if (isFunc(value)) return value(options as any);
-      if (isString(value)) return createElement(value, null, render(locale, presets, options as any, props));
+      if (value === undefined || isString(value))
+        return createElement(value || key, null, render(locale, presets, options as any, props));
       return null;
     }
     case (type === TemplateType.plural && isNumber(value) && options !== undefined): {
