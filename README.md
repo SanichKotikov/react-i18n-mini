@@ -1,6 +1,6 @@
 # react-i18n-mini
 
-A tiny (~1.49 kB) internationalization library for React.
+A tiny (~1.56 kB) internationalization library for React.
 
 ```bash
 npm i -S react-i18n-mini
@@ -44,6 +44,14 @@ function App() {
   message="Last login {datetime}"
   datetime={new Date()}
 />
+
+<DateTime
+  date={new Date()}
+  day="numeric"
+  month="long"
+  weekday="long"
+  year="numeric"
+/>
 ```
 
 Note: use `{datetime, date}` for number or string values.
@@ -64,12 +72,13 @@ Note: use `{datetime, date}` for number or string values.
 export { useI18n } from 'react-i18n-mini';
 
 function SomeComp() {
-  const { t, formatNumber } = useI18n();
+  const { t, formatNumber, formatDateTime } = useI18n();
 
   return (
     <div>
       <h1>{t({ id: "some_page.title", message: "Page title" })}</h1>
       <div>{formatNumber(99999.9, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+      <div>{formatDateTime(new Date(), { day: '2-digit', month: 'short' })}</div>
     </div>
   );
 }

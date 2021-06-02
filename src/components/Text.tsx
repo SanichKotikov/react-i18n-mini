@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { useI18n } from '../context';
-import { I18nMessage, I18nValues } from '../types';
+import type { I18nMessage, I18nValues } from '../types';
 
 type Props = Readonly<I18nMessage> & Readonly<I18nValues>;
 

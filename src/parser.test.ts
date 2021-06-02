@@ -1,4 +1,5 @@
-import { TemplateMessage, TemplateType } from './types';
+import type { TemplateMessage } from './types';
+import { TemplateType } from './types';
 import { parser } from './parser';
 
 describe('parser', () => {

@@ -10,6 +10,7 @@ export const I18nContext = createContext<I18n>({
   setLocales: noop(),
   t: noop(''),
   formatNumber: noop(''),
+  formatDateTime: noop(''),
 });
 
 export function useI18n(): Readonly<I18n> {

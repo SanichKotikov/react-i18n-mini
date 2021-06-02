@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { useI18n } from '../context';
-import { NumberOptions, NumberStyle } from '../types';
+import type { NumberOptions, NumberStyle } from '../types';
 
 interface Props extends Omit<NumberOptions, 'style'> {
   value: number;

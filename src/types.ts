@@ -27,6 +27,8 @@ export interface NumberOptions extends Intl.NumberFormatOptions {
   unitDisplay?: 'short' | 'long' | 'narrow';
 }
 
+export interface DateTimeOptions extends Intl.DateTimeFormatOptions {}
+
 export interface I18nValues {
   [key: string]: I18nValue;
 }
@@ -48,4 +50,5 @@ export interface I18n {
   setLocales: (locales: I18nMessages) => void;
   t: (message: I18nMessage, values?: Readonly<I18nValues>) => ReactNode;
   formatNumber: (value: number, options?: Readonly<NumberOptions>) => string;
+  formatDateTime: (date: number | string | Date, options?: Readonly<DateTimeOptions>) => string;
 }

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { memo, useCallback, useRef, useState } from 'react';
-import { I18nMessage, I18nMessages, I18nValues, NumberOptions } from '../types';
-import { formatNumber } from '../format';
+import type { DateTimeOptions, I18nMessage, I18nMessages, I18nValues, NumberOptions } from '../types';
+import { formatDateTime, formatNumber } from '../format';
 import { render } from '../render';
 import { parser } from '../parser';
 import { I18nContext } from '../context';
@@ -40,6 +40,14 @@ export const I18nProvider = memo<Props>(function I18nProvider({
     return formatNumber(value, lang, options);
   }, [lang]);
 
+  const formatDate = useCallback((
+    date: number | string | Date,
+    options?: Readonly<DateTimeOptions>,
+  ): string => {
+    const dateValue = typeof date === 'string' ? new Date(date) : date;
+    return formatDateTime(dateValue, lang, options);
+  }, [lang]);
+
   return (
     <I18nContext.Provider
       value={{
@@ -50,6 +58,7 @@ export const I18nProvider = memo<Props>(function I18nProvider({
         setLocales,
         t: translate,
         formatNumber: formatNum,
+        formatDateTime: formatDate,
       }}
     >
       {children}
