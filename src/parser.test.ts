@@ -11,6 +11,8 @@ describe('parser', () => {
     expect(parser('Hello {name}')).toEqual<TemplateMessage>(['Hello ', ['name']]);
     expect(parser('{count} messages')).toEqual<TemplateMessage>([['count'], ' messages']);
     expect(parser('{count, number} messages')).toEqual<TemplateMessage>([['count', TemplateType.number], ' messages']);
+    expect(parser('{count, number, format} messages'))
+      .toEqual<TemplateMessage>([['count', TemplateType.number, 'format'], ' messages']);
     expect(parser('Last login {date}')).toEqual<TemplateMessage>(['Last login ', ['date']]);
     expect(parser('Last login {date, date}')).toEqual<TemplateMessage>(['Last login ', ['date', TemplateType.date]]);
   });

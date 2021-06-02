@@ -13,8 +13,8 @@ const PLURAL_ITEM_REGEXP = new RegExp(`^(${PLURAL_RILES})\\s{(.+?)}$`);
 const TAG_ALL_REGEXP = /<(\w+?)>(.+?)<\/\w+?>/g;
 const TAG_ITEM_REGEXP = /^<(\w+?)>(.+?)<\/\w+?>$/;
 
-const TPL_ALL_REGEXP = new RegExp(`{\\w+?(?:, (?:${TYPES})(?:,(?: (?:${PLURAL_RILES}) {.+?})+|)|)}`, 'g');
-const TPL_ITEM_REGEXP = new RegExp(`{(\\w+?)(?:, (${TYPES})(,(?: (?:${PLURAL_RILES}) {.+?})+|)|)}`);
+const TPL_ALL_REGEXP = new RegExp(`{(\\w+?)(, (${TYPES})(, ((${PLURAL_RILES}) {.+?}+|\\w+?)|)|)}`, 'g');
+const TPL_ITEM_REGEXP = new RegExp(`^{(\\w+?)(?:, (${TYPES})(?:, ((?:${PLURAL_RILES}) {.+?}+|\\w+?)|)|)}$`);
 
 function splitMessage(
   message: string,
@@ -83,7 +83,7 @@ export function parser(message: string): TemplateMessage {
 
         // TODO: fix types
         const [name, type, value] = [...tpl].filter(Boolean).slice(1) as [string, TemplateType, string];
-        return trimArray([name, type, type === 'plural' ? parsePlural(value) : undefined]);
+        return trimArray([name, type, type === 'plural' ? parsePlural(value) : value]);
       });
     })
     .flat();
