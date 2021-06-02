@@ -66,7 +66,7 @@ Note: use `{datetime, date}` for number or string values.
 />
 ```
 
-## useI18n
+#### useI18n
 
 ```typescript jsx
 export { useI18n } from 'react-i18n-mini';
@@ -82,4 +82,39 @@ function SomeComp() {
     </div>
   );
 }
+```
+
+#### Using presets
+
+```typescript jsx
+export { I18nPresets, I18nProvider, Text } from 'react-i18n-mini';
+
+const PRESETS: I18nPresets = {
+  number: {
+    default: { minimumFractionDigits: 0, maximumFractionDigits: 0 },
+    fraction: { minimumFractionDigits: 2 },
+  },
+  dateTime: {
+    default: { day: 'numeric', month: 'short', year: 'numeric' },
+    full: { day: 'numeric', month: 'long', year: 'numeric' },
+    simple: { day: 'numeric', month: 'short' },
+  },
+};
+
+function App() {
+  return (
+    <I18nProvider language="en">
+      <Text
+        id="app.sample_message"
+        message="Some value: {count, number, fraction}"
+        count={999}
+      />
+    </I18nProvider>
+  )
+}
+```
+
+```typescript jsx
+<div>{formatNumber(9999, 'fraction')}</div>
+<DateTime date={new Date()} preset="simple" />
 ```

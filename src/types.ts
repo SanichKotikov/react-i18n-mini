@@ -29,7 +29,7 @@ export interface NumberOptions extends Intl.NumberFormatOptions {
 
 export interface DateTimeOptions extends Intl.DateTimeFormatOptions {}
 
-export interface I18nFormats {
+export interface I18nPresets {
   dateTime?: Readonly<{ default: Readonly<DateTimeOptions> } & Record<string, Readonly<DateTimeOptions>>>;
   number?: Readonly<{ default: Readonly<NumberOptions> } & Record<string, Readonly<NumberOptions>>>;
 }
@@ -51,10 +51,10 @@ export interface I18n {
   language: string;
   locales: Readonly<I18nMessages>;
   _locales: MutableRefObject<Readonly<Record<string, I18nMessages>>>;
-  _formats: MutableRefObject<Readonly<I18nFormats>>;
+  _presets: MutableRefObject<Readonly<I18nPresets>>;
   setLanguage: (language: string) => void;
   setLocales: (locales: I18nMessages) => void;
   t: (message: I18nMessage, values?: Readonly<I18nValues>) => ReactNode;
-  formatNumber: (value: number, options?: Readonly<NumberOptions>) => string;
-  formatDateTime: (date: number | string | Date, options?: Readonly<DateTimeOptions>) => string;
+  formatNumber: (value: number, options?: string | Readonly<NumberOptions>) => string;
+  formatDateTime: (date: number | string | Date, options?: string | Readonly<DateTimeOptions>) => string;
 }
