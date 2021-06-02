@@ -118,7 +118,7 @@ const PRESETS: I18nPresets = {
 
 function App() {
   return (
-    <I18nProvider language="en">
+    <I18nProvider language="en" presets={PRESETS}>
       <Text
         id="app.sample_message"
         message="Some value: {count, number, fraction}"
