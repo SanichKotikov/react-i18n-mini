@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react';
 import React, { createElement, Fragment } from 'react';
-import type { I18nValues, Template, TemplateMessage } from './types';
+import type { I18nFormats, I18nValues, Template, TemplateMessage } from './types';
 import { TemplateType } from './types';
 import { formatDateTime, formatNumber } from './format';
 import { isDate, isFunc, isNumber, isString } from './utils';
 
 function format(
   locale: string,
+  formats: Readonly<I18nFormats>,
   message: string | Template,
   props: I18nValues = {},
 ): ReactNode {
@@ -20,14 +21,16 @@ function format(
   switch (true) {
     case type === undefined && isNumber(value):
     case type === TemplateType.number && isNumber(value): {
-      return formatNumber(value as number, locale); // TODO options
+      const formatOptions = isString(options) ? formats.number?.[options] : formats.number?.default;
+      return formatNumber(value as number, locale, formatOptions);
     }
     case type === undefined && isDate(value):
     case type === TemplateType.date && (isString(value) || isNumber(value) || isDate(value)):
-      return formatDateTime(new Date(value as number), locale); // TODO options
+      const formatOptions = isString(options) ? formats.dateTime?.[options] : formats.dateTime?.default;
+      return formatDateTime(new Date(value as number), locale, formatOptions);
     case (type === TemplateType.tag && options !== undefined): {
       if (isFunc(value)) return value(options as any);
-      if (isString(value)) return createElement(value, null, render(locale, options as any, props));
+      if (isString(value)) return createElement(value, null, render(locale, formats, options as any, props));
       return null;
     }
     case (type === TemplateType.plural && isNumber(value) && options !== undefined): {
@@ -38,15 +41,22 @@ function format(
       // @ts-ignore
       const template = options[rule] || options.other;
 
-      return render(locale, template, props);
+      return render(locale, formats, template, props);
     }
     default:
       return String(value);
   }
 }
 
-export function render(locale: string, message: TemplateMessage, props: I18nValues = {}): ReactNode {
+export function render(
+  locale: string,
+  formats: Readonly<I18nFormats>,
+  message: TemplateMessage,
+  props: I18nValues = {},
+): ReactNode {
   return Array.isArray(message)
-    ? message.map((msg: string | Template, idx: number) => <Fragment key={idx}>{format(locale, msg, props)}</Fragment>)
+    ? message.map((msg: string | Template, idx: number) => (
+      <Fragment key={idx}>{format(locale, formats, msg, props)}</Fragment>
+    ))
     : message;
 }

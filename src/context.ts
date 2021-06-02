@@ -6,6 +6,7 @@ export const I18nContext = createContext<I18n>({
   language: '',
   locales: {},
   _locales: { current: {} },
+  _formats: { current: {} },
   setLanguage: noop(),
   setLocales: noop(),
   t: noop(''),

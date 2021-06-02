@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { useI18n } from '../context';
+import { isEmpty } from '../utils';
 import type { NumberOptions, NumberStyle } from '../types';
 
 interface Props extends Omit<NumberOptions, 'style'> {
@@ -7,7 +8,9 @@ interface Props extends Omit<NumberOptions, 'style'> {
   numberStyle?: NumberStyle;
 }
 
-export const Numeric = memo<Readonly<Props>>(function Numeric({ value, numberStyle, ...options }) {
-  const { formatNumber } = useI18n();
-  return <>{formatNumber(value, { ...options, style: numberStyle })}</>;
+export const Numeric = memo<Readonly<Props>>(function Numeric({ value, numberStyle, ...props }) {
+  const { _formats, formatNumber } = useI18n();
+  const options = { ...props, style: numberStyle };
+
+  return <>{formatNumber(value, !isEmpty(options) ? options : _formats.current.number?.default)}</>;
 });
