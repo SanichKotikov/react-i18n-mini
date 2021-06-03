@@ -6,3 +6,6 @@ export { DateTime } from './components/DateTime';
 export { defineMessages } from './utils';
 
 export type { I18nPresets, I18n } from './types';
+export type { TextProps } from './components/Text';
+export type { NumericProps } from './components/Numeric';
+export type { DateTimeProps } from './components/DateTime';
