@@ -6,7 +6,7 @@ export interface TextProps extends I18nMessage, I18nValues {}
 
 export const Text = memo<TextProps>(
   function Text({ id, message, ...props }) {
-    const { t } = useI18n();
-    return <>{t({ id, message }, props)}</>;
+    const { i18n } = useI18n();
+    return <>{i18n.t({ id, message }, props)}</>;
   },
 );

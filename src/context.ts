@@ -1,19 +1,9 @@
 import { createContext, useContext } from 'react';
 import type { I18n } from './types';
-import { noop } from './utils';
+import { i18n } from './core';
 
-export const I18nContext = createContext<I18n>({
-  language: '',
-  locales: {},
-  _locales: { current: {} },
-  _presets: { current: {} },
-  setLanguage: noop(),
-  setLocales: noop(),
-  t: noop(''),
-  formatNumber: noop(''),
-  formatDateTime: noop(''),
-});
+export const I18nContext = createContext<{ i18n: I18n }>({ i18n });
 
-export function useI18n(): Readonly<I18n> {
+export function useI18n(): Readonly<{ i18n: I18n }> {
   return useContext(I18nContext);
 }

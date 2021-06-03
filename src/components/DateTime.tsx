@@ -10,13 +10,13 @@ export interface DateTimeProps extends DateTimeOptions {
 
 export const DateTime = memo<Readonly<DateTimeProps>>(
   function DateTime({ date, preset, ...options }) {
-    const { _presets, formatDateTime } = useI18n();
+    const { i18n } = useI18n();
 
     return (
       <>
-        {formatDateTime(date, !isEmpty(options)
+        {i18n.formatDateTime(date, !isEmpty(options)
           ? options
-          : _presets.current.dateTime?.[preset || 'default'])}
+          : i18n.presets.dateTime?.[preset || 'default'])}
       </>
     );
   },

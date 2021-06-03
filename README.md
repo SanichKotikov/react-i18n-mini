@@ -1,6 +1,6 @@
 # react-i18n-mini
 
-A tiny (~1.82 kB) internationalization library for React.
+A tiny (~1.79 kB) internationalization library for React.
 
 ```bash
 npm i -S react-i18n-mini
@@ -11,11 +11,13 @@ npm i -S react-i18n-mini
 #### Displaying Messages
 
 ```typescript jsx
-export { I18nProvider, Text } from 'react-i18n-mini';
+export { i18n, I18nProvider, Text } from 'react-i18n-mini';
+
+i18n.setLanguage('en');
 
 function App() {
   return (
-    <I18nProvider language="en">
+    <I18nProvider>
       <Text
         id="app.sample_message"
         message="Read the <link>documentation</link> for more info."
@@ -72,13 +74,13 @@ Note: use `{datetime, date}` for number or string values.
 export { useI18n } from 'react-i18n-mini';
 
 function SomeComp() {
-  const { t, formatNumber, formatDateTime } = useI18n();
+  const { i18n } = useI18n();
 
   return (
     <div>
-      <h1>{t({ id: "some_page.title", message: "Page title" })}</h1>
-      <div>{formatNumber(99999.9, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-      <div>{formatDateTime(new Date(), { day: '2-digit', month: 'short' })}</div>
+      <h1>{i18n.t({ id: "some_page.title", message: "Page title" })}</h1>
+      <div>{i18n.formatNumber(99999.9, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+      <div>{i18n.formatDateTime(new Date(), { day: '2-digit', month: 'short' })}</div>
     </div>
   );
 }
@@ -94,31 +96,33 @@ const messages = defineMessages({
 });
 
 function SomeComp() {
-  const { t } = useI18n();
-  return <h1>{t(messages.title)}</h1>;
+  const { i18n } = useI18n();
+  return <h1>{i18n.t(messages.title)}</h1>;
 }
 ```
 
 #### Using Presets
 
 ```typescript jsx
-export { I18nPresets, I18nProvider, Text } from 'react-i18n-mini';
+export { i18n, I18nProvider, Text } from 'react-i18n-mini';
 
-const PRESETS: I18nPresets = {
-  number: {
-    default: { minimumFractionDigits: 0, maximumFractionDigits: 0 },
-    fraction: { minimumFractionDigits: 2 },
-  },
-  dateTime: {
-    default: { day: 'numeric', month: 'short', year: 'numeric' },
-    full: { day: 'numeric', month: 'long', year: 'numeric' },
-    simple: { day: 'numeric', month: 'short' },
-  },
-};
+i18n
+  .setLanguage('en')
+  .setPresets({
+    number: {
+      default: { minimumFractionDigits: 0, maximumFractionDigits: 0 },
+      fraction: { minimumFractionDigits: 2 },
+    },
+    dateTime: {
+      default: { day: 'numeric', month: 'short', year: 'numeric' },
+      full: { day: 'numeric', month: 'long', year: 'numeric' },
+      simple: { day: 'numeric', month: 'short' },
+    },
+  });
 
 function App() {
   return (
-    <I18nProvider language="en" presets={PRESETS}>
+    <I18nProvider>
       <Text
         id="app.sample_message"
         message="Some value: {count, number, fraction}"
@@ -130,6 +134,6 @@ function App() {
 ```
 
 ```typescript jsx
-<div>{formatNumber(9999, 'fraction')}</div>
+<div>{i18n.formatNumber(9999, 'fraction')}</div>
 <DateTime date={new Date()} preset="simple" />
 ```

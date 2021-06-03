@@ -1,11 +1,5 @@
 import type { I18nMessages, I18nRenderValue, I18nValue } from './types';
 
-export function noop(): () => undefined;
-export function noop<T>(returnValue: T): () => T;
-export function noop(returnValue?: any) {
-  return () => returnValue;
-}
-
 export function isNumber(value: I18nValue): value is number {
   return typeof value === 'number';
 }

@@ -11,14 +11,14 @@ export interface NumericProps extends Omit<NumberOptions, 'style'> {
 
 export const Numeric = memo<Readonly<NumericProps>>(
   function Numeric({ value, preset, numberStyle, ...props }) {
-    const { _presets, formatNumber } = useI18n();
+    const { i18n } = useI18n();
     const options = { ...props, style: numberStyle };
 
     return (
       <>
-        {formatNumber(value, !isEmpty(options)
+        {i18n.formatNumber(value, !isEmpty(options)
           ? options
-          : _presets.current.number?.[preset || 'default'])}
+          : i18n.presets.number?.[preset || 'default'])}
       </>
     );
   },

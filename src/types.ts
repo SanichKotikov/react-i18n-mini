@@ -1,4 +1,4 @@
-import type { MutableRefObject, ReactChild, ReactFragment, ReactNode } from 'react';
+import type { ReactChild, ReactFragment, ReactNode } from 'react';
 
 export enum TemplateType {
   number = 'number',
@@ -51,11 +51,11 @@ export type I18nMessages = Readonly<Record<string, I18nMessage>>;
 
 export interface I18n {
   language: string;
-  locales: Readonly<I18nLocales>;
-  _locales: MutableRefObject<Readonly<Record<string, I18nLocales>>>;
-  _presets: MutableRefObject<Readonly<I18nPresets>>;
-  setLanguage: (language: string) => void;
-  setLocales: (locales: I18nLocales) => void;
+  locales: Readonly<Record<string, I18nLocales>>;
+  presets: Readonly<I18nPresets>;
+  setLanguage: (language: string) => I18n;
+  setLocales: (locales: Readonly<I18nLocales>) => I18n;
+  setPresets: (presets: Readonly<I18nPresets>) => I18n;
   t: (message: I18nMessage, values?: Readonly<I18nValues>) => ReactNode;
   formatNumber: (value: number, options?: string | Readonly<NumberOptions>) => string;
   formatDateTime: (date: number | string | Date, options?: string | Readonly<DateTimeOptions>) => string;
