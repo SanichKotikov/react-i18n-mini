@@ -49,13 +49,14 @@ export interface I18nMessage {
 
 export type I18nMessages = Readonly<Record<string, I18nMessage>>;
 
+export type SubscribeFunc = (callback: () => void) => () => void;
+
 export interface I18n {
   language: string;
   locales: Readonly<Record<string, I18nLocales>>;
   presets: Readonly<I18nPresets>;
   setLanguage: (language: string) => I18n;
   setLocales: (locales: Readonly<I18nLocales>) => I18n;
-  setPresets: (presets: Readonly<I18nPresets>) => I18n;
   t: (message: I18nMessage, values?: Readonly<I18nValues>) => ReactNode;
   formatNumber: (value: number, options?: string | Readonly<NumberOptions>) => string;
   formatDateTime: (date: number | string | Date, options?: string | Readonly<DateTimeOptions>) => string;

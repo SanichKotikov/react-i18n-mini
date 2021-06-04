@@ -1,6 +1,6 @@
 # react-i18n-mini
 
-A tiny (~1.79 kB) internationalization library for React.
+A tiny (~1.84 kB) internationalization library for React.
 
 ```bash
 npm i -S react-i18n-mini
@@ -11,13 +11,13 @@ npm i -S react-i18n-mini
 #### Displaying Messages
 
 ```typescript jsx
-export { i18n, I18nProvider, Text } from 'react-i18n-mini';
+export { createI18n, I18nProvider, Text } from 'react-i18n-mini';
 
-i18n.setLanguage('en');
+const i18n = createI18n({ language: 'en' });
 
 function App() {
   return (
-    <I18nProvider>
+    <I18nProvider {...i18n}>
       <Text
         id="app.sample_message"
         message="Read the <link>documentation</link> for more info."
@@ -104,25 +104,26 @@ function SomeComp() {
 #### Using Presets
 
 ```typescript jsx
-export { i18n, I18nProvider, Text } from 'react-i18n-mini';
+export { createI18n, I18nProvider, Text } from 'react-i18n-mini';
 
-i18n
-  .setLanguage('en')
-  .setPresets({
+const i18n = createI18n({
+  language: 'en',
+  presets: {
     number: {
       default: { minimumFractionDigits: 0, maximumFractionDigits: 0 },
-      fraction: { minimumFractionDigits: 2 },
+      fraction: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
     },
     dateTime: {
       default: { day: 'numeric', month: 'short', year: 'numeric' },
       full: { day: 'numeric', month: 'long', year: 'numeric' },
       simple: { day: 'numeric', month: 'short' },
     },
-  });
+  },
+});
 
 function App() {
   return (
-    <I18nProvider>
+    <I18nProvider {...i18n}>
       <Text
         id="app.sample_message"
         message="Some value: {count, number, fraction}"

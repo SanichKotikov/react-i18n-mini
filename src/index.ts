@@ -1,4 +1,4 @@
-export { i18n, sub } from './core';
+export { createI18n } from './core';
 export { useI18n } from './context';
 export { I18nProvider } from './components/I18nProvider';
 export { Text } from './components/Text';
