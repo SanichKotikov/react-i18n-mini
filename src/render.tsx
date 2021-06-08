@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactFragment } from 'react';
 import React, { createElement, Fragment } from 'react';
 import type { I18nPresets, I18nValues, Template, TemplateMessage } from './types';
 import { TemplateType } from './types';
@@ -10,7 +10,7 @@ function format(
   presets: Readonly<I18nPresets>,
   message: string | Template,
   props: I18nValues = {},
-): ReactNode {
+): ReactFragment | string | null {
   if (typeof message === 'string') return message;
 
   const [key, type, options] = message;
@@ -59,7 +59,7 @@ export function render(
   presets: Readonly<I18nPresets>,
   message: TemplateMessage,
   props: I18nValues = {},
-): ReactNode {
+): ReactFragment | string {
   return Array.isArray(message)
     ? message.map((msg: string | Template, idx: number) => (
       <Fragment key={idx}>{format(locale, presets, msg, props)}</Fragment>

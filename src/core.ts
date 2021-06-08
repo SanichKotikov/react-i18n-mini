@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactFragment } from 'react';
 import type {
   DateTimeOptions,
   I18n,
@@ -45,7 +45,7 @@ export function createI18n(options: I18nOptions): { i18n: I18n, subscribe: Subsc
       return i18n;
     },
 
-    t: (msg: Readonly<I18nMessage>, props?: Readonly<I18nValues>): ReactNode => {
+    t: (msg: Readonly<I18nMessage>, props?: Readonly<I18nValues>): ReactFragment | string => {
       return render(i18n.language, i18n.presets, parser(i18n.locales[i18n.language]?.[msg.id] || msg.message), props);
     },
     formatNumber: (value: number, options?: string | Readonly<NumberOptions>): string => {
