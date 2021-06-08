@@ -11,7 +11,7 @@ npm i -S react-i18n-mini
 #### Displaying Messages
 
 ```typescript jsx
-export { createI18n, I18nProvider, Text } from 'react-i18n-mini';
+import { createI18n, I18nProvider, Text } from 'react-i18n-mini';
 
 const i18n = createI18n({ language: 'en' });
 
@@ -71,7 +71,7 @@ Note: use `{datetime, date}` for number or string values.
 #### useI18n
 
 ```typescript jsx
-export { useI18n } from 'react-i18n-mini';
+import { useI18n } from 'react-i18n-mini';
 
 function SomeComp() {
   const { i18n } = useI18n();
@@ -89,7 +89,7 @@ function SomeComp() {
 #### Define Messages
 
 ```typescript jsx
-export { useI18n, defineMessages } from 'react-i18n-mini';
+import { useI18n, defineMessages } from 'react-i18n-mini';
 
 const messages = defineMessages({
   title: { id: "some_page.title", message: "Page title" },
@@ -104,7 +104,7 @@ function SomeComp() {
 #### Using Presets
 
 ```typescript jsx
-export { createI18n, I18nProvider, Text } from 'react-i18n-mini';
+import { createI18n, I18nProvider, Text } from 'react-i18n-mini';
 
 const i18n = createI18n({
   language: 'en',
