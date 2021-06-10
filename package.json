@@ -1,6 +1,6 @@
 {
   "name": "react-i18n-mini",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Internationalization for React",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -15,29 +15,39 @@
     "type": "git",
     "url": "git+https://github.com/SanichKotikov/react-i18n-mini.git"
   },
+  "bugs": {
+    "url": "https://github.com/SanichKotikov/react-i18n-mini/issues"
+  },
+  "homepage": "https://github.com/SanichKotikov/react-i18n-mini",
   "author": "Sanich Kotikov <sancho@cdrpro.ru> (https://sanichkotikov.github.io)",
   "license": "MIT",
   "files": [
     "lib"
   ],
   "keywords": [
+    "intl",
+    "i18n",
+    "internationalization",
+    "locale",
+    "localization",
+    "globalization",
     "react",
-    "react-component",
-    "component"
+    "reactjs",
+    "format",
+    "formatting",
+    "translate",
+    "translation"
   ],
-  "bugs": {
-    "url": "https://github.com/SanichKotikov/react-i18n-mini/issues"
-  },
   "peerDependencies": {
     "react": ">= 17.0.0"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.5.5",
+    "@size-limit/preset-small-lib": "4.12.0",
     "@types/jest": "26.0.23",
     "@types/react": "17.0.9",
     "jest": "27.0.4",
     "react-test-renderer": "17.0.2",
-    "size-limit": "4.11.0",
+    "size-limit": "4.12.0",
     "ts-jest": "27.0.3",
     "typescript": "4.3.2"
   },
@@ -45,6 +55,5 @@
     {
       "path": "lib/index.js"
     }
-  ],
-  "homepage": "https://github.com/SanichKotikov/react-i18n-mini"
+  ]
 }

@@ -30,7 +30,7 @@ function splitMessage(
       if (!m || !m[1]) return val;
 
       // TODO: fix types
-      return mapFunc(matches[m[1] as any], val);
+      return mapFunc(matches[m[1] as string], val);
     });
 }
 

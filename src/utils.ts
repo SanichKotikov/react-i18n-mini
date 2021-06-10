@@ -1,6 +1,6 @@
-import type { I18nMessages, I18nRenderValue, I18nValue } from './types';
+import type { I18nMessages, I18nRenderValue } from './types';
 
-export function isNumber(value: I18nValue): value is number {
+export function isNumber(value: unknown): value is number {
   return typeof value === 'number';
 }
 
@@ -8,11 +8,11 @@ export function isString(value: unknown): value is string {
   return typeof value === 'string';
 }
 
-export function isDate(value: I18nValue): value is Date {
+export function isDate(value: unknown): value is Date {
   return value instanceof Date;
 }
 
-export function isFunc(value: I18nValue): value is I18nRenderValue {
+export function isFunc(value: unknown): value is I18nRenderValue {
   return typeof value === 'function';
 }
 
@@ -21,6 +21,6 @@ export function isEmpty<T extends object>(value: T): boolean {
 }
 
 // Just an anchor for extract function
-export function defineMessages<T extends I18nMessages, K extends keyof T>(messages: T): T {
+export function defineMessages<T extends I18nMessages>(messages: T): T {
   return messages;
 }
