@@ -8,7 +8,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
-    "size": "npm run build && size-limit",
+    "size": "size-limit",
     "test": "jest"
   },
   "repository": {
