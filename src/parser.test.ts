@@ -48,6 +48,8 @@ describe('parser', () => {
   it('should parse tags', function() {
     expect(parser('First line.<br/>Second line.'))
       .toEqual<TemplateMessage>(['First line.', ['br', TemplateType.tag], 'Second line.']);
+    expect(parser('First line.<br />Second line.'))
+      .toEqual<TemplateMessage>(['First line.', ['br', TemplateType.tag], 'Second line.']);
     expect(parser('First line.<br/>Second line with <b>highlighted text</b>.')).toEqual<TemplateMessage>([
       'First line.', ['br', TemplateType.tag], 'Second line with ', ['b', TemplateType.tag, 'highlighted text'], '.',
     ]);

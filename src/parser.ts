@@ -10,8 +10,8 @@ const PLURAL_RILES = '=0|zero|one|two|few|many|other';
 const PLURAL_ALL_REGEXP = new RegExp(`(${PLURAL_RILES})`, 'g');
 const PLURAL_ITEM_REGEXP = new RegExp(`^(${PLURAL_RILES})\\s{(.+?)}$`);
 
-const TAG_ALL_REGEXP = /(<(\w+?)>(.+?)<\/\w+?>|<(\w+?)\/>)/g;
-const TAG_ITEM_REGEXP = /^<(\w+?)(?:\/>|>(.+?)<\/\w+?>)$/;
+const TAG_ALL_REGEXP = /(<(\w+?)>(.+?)<\/\w+?>|<(\w+?)(| )\/>)/g;
+const TAG_ITEM_REGEXP = /^<(\w+?)(?:(?:| )\/>|>(.+?)<\/\w+?>)$/;
 
 const TPL_ALL_REGEXP = new RegExp(`{(\\w+?)(, (${TYPES})(, ((${PLURAL_RILES}) {.+?}+|\\w+?)|)|)}`, 'g');
 const TPL_ITEM_REGEXP = new RegExp(`^{(\\w+?)(?:, (${TYPES})(?:, ((?:${PLURAL_RILES}) {.+?}+|\\w+?)|)|)}$`);
