@@ -1,5 +1,5 @@
 import type { ReactFragment } from 'react';
-import React, { createElement, Fragment } from 'react';
+import { createElement } from 'react';
 import type { I18nPresets, I18nValues, Template, TemplateMessage } from './types';
 import { TemplateType } from './types';
 import { formatDateTime, formatNumber } from './format';
@@ -10,11 +10,12 @@ function format(
   presets: Readonly<I18nPresets>,
   message: string | Template,
   props: I18nValues = {},
+  key: number,
 ): ReactFragment | string | null {
   if (typeof message === 'string') return message;
 
-  const [key, type, options] = message;
-  const value = props[key];
+  const [id, type, options] = message;
+  const value = props[id];
 
   // TODO: fix types
   // https://github.com/microsoft/TypeScript/issues/37178
@@ -30,13 +31,13 @@ function format(
       return formatDateTime(new Date(value as number), locale, formatOptions);
     case (type === TemplateType.tag && options === undefined): {
       if (isFunc(value)) return value('');
-      if (value === undefined || isString(value)) return createElement(value || key);
+      if (value === undefined || isString(value)) return createElement(value || id, { key });
       return null;
     }
     case (type === TemplateType.tag && options !== undefined): {
       if (isFunc(value)) return value(options as any);
       if (value === undefined || isString(value))
-        return createElement(value || key, null, render(locale, presets, options as any, props));
+        return createElement(value || id, { key }, render(locale, presets, options as any, props));
       return null;
     }
     case (type === TemplateType.plural && isNumber(value) && options !== undefined): {
@@ -60,9 +61,13 @@ export function render(
   message: TemplateMessage,
   props: I18nValues = {},
 ): ReactFragment | string {
-  return Array.isArray(message)
-    ? message.map((msg: string | Template, idx: number) => (
-      <Fragment key={idx}>{format(locale, presets, msg, props)}</Fragment>
-    ))
-    : message;
+  if (Array.isArray(message)) {
+    const result = message.map((msg: string | Template, idx: number) => (
+      format(locale, presets, msg, props, idx)
+    ));
+
+    return result.every(isString) ? result.join('') : result;
+  }
+
+  return message;
 }
