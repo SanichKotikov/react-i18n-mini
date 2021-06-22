@@ -4,7 +4,7 @@ import { TemplateType } from './types';
 const VAR_KEY = 'var';
 const WRAPPER = '%%%';
 
-const TYPES = 'number|plural|date';
+const TYPES = 'num|number|plural|date';
 const PLURAL_RILES = '=0|zero|one|two|few|many|other';
 
 const PLURAL_ALL_REGEXP = new RegExp(`(${PLURAL_RILES})`, 'g');
@@ -15,6 +15,13 @@ const TAG_ITEM_REGEXP = /^<(\w+?)(?:(?:| )\/>|>(.+?)<\/\w+?>)$/;
 
 const TPL_ALL_REGEXP = new RegExp(`{(\\w+?)(, (${TYPES})(, ((${PLURAL_RILES}) {.+?}+|\\w+?)|)|)}`, 'g');
 const TPL_ITEM_REGEXP = new RegExp(`^{(\\w+?)(?:, (${TYPES})(?:, ((?:${PLURAL_RILES}) {.+?}+|\\w+?)|)|)}$`);
+
+function getFormatType(source?: string): TemplateType | undefined {
+  if (source === 'num' || source === 'number') return TemplateType.number;
+  if (source === 'plural') return TemplateType.plural;
+  if (source === 'date') return TemplateType.date;
+  return undefined;
+}
 
 function splitMessage(
   message: string,
@@ -83,8 +90,13 @@ export function parser(message: string): TemplateMessage {
         if (!tpl) return val;
 
         // TODO: fix types
-        const [name, type, value] = [...tpl].filter(Boolean).slice(1) as [string, TemplateType, string];
-        return trimArray([name, type, type === 'plural' ? parsePlural(value) : value]);
+        const [name, type, value] = [...tpl].filter(Boolean).slice(1) as [string, string?, string?];
+
+        return trimArray([
+          name,
+          getFormatType(type),
+          type === 'plural' && value ? parsePlural(value) : value,
+        ]);
       });
     })
     .flat();

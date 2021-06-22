@@ -142,3 +142,8 @@ function App() {
 ## Extracting messages
 
 Use [react-i18n-mini-parser](https://www.npmjs.com/package/react-i18n-mini-parser) for extracting default messages.
+
+## Polyfills
+
+This library uses Intl APIs (NumberFormat, DateTimeFormat and PluralRules), so you have to use polyfills for some
+outdated browsers. https://formatjs.io/docs/polyfills.
