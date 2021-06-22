@@ -3,7 +3,7 @@ import { createElement } from 'react';
 import type { I18nPresets, I18nValues, Template, TemplateMessage } from './types';
 import { TemplateType } from './types';
 import { formatDateTime, formatNumber } from './format';
-import { isDate, isFunc, isNumber, isString } from './utils';
+import { getPreset, isDate, isFunc, isNumber, isPlural, isString } from './utils';
 
 function format(
   locale: string,
@@ -17,42 +17,34 @@ function format(
   const [id, type, options] = message;
   const value = props[id];
 
-  // TODO: fix types
-  // https://github.com/microsoft/TypeScript/issues/37178
-  switch (true) {
-    case type === undefined && isNumber(value):
-    case type === TemplateType.number && isNumber(value): {
-      const formatOptions = isString(options) ? presets.number?.[options] : presets.number?.default;
-      return formatNumber(value as number, locale, formatOptions);
-    }
-    case type === undefined && isDate(value):
-    case type === TemplateType.date && (isString(value) || isNumber(value) || isDate(value)):
-      const formatOptions = isString(options) ? presets.dateTime?.[options] : presets.dateTime?.default;
-      return formatDateTime(new Date(value as number), locale, formatOptions);
-    case (type === TemplateType.tag && options === undefined): {
-      if (isFunc(value)) return value('');
-      if (value === undefined || isString(value)) return createElement(value || id, { key });
-      return null;
-    }
-    case (type === TemplateType.tag && options !== undefined): {
-      if (isFunc(value)) return value(options as any);
-      if (value === undefined || isString(value))
-        return createElement(value || id, { key }, render(locale, presets, options as any, props));
-      return null;
-    }
-    case (type === TemplateType.plural && isNumber(value) && options !== undefined): {
-      // @ts-ignore
-      if (value === 0 && '=0' in options) return options['=0'];
+  if (isNumber(value) && (!type || type === TemplateType.number))
+    return formatNumber(value, locale, getPreset(presets.number, options));
 
-      const rule = new Intl.PluralRules(locale).select(value as number);
-      // @ts-ignore
-      const template = options[rule] || options.other;
+  else if (isDate(value) || ((isString(value) || isNumber(value)) && type === TemplateType.date))
+    return formatDateTime(new Date(value), locale, getPreset(presets.dateTime, options));
 
-      return render(locale, presets, template, props);
-    }
-    default:
-      return String(value);
+  else if (type === TemplateType.tag) {
+    const child = isString(options) ? options : '';
+    if (isFunc(value)) return value(child);
+
+    return createElement(
+      isString(value) ? value : id,
+      { key },
+      isString(options)
+        ? render(locale, presets, options, props)
+        : undefined,
+    );
   }
+
+  else if (type === TemplateType.plural && isNumber(value) && isPlural(options)) {
+    if (value === 0 && options['=0']) return options['=0'];
+
+    const rule = new Intl.PluralRules(locale).select(value);
+    const template = options[rule] || options.other || '';
+    return render(locale, presets, template, props);
+  }
+
+  else return String(value);
 }
 
 export function render(

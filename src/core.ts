@@ -12,6 +12,7 @@ import type {
 import { formatDateTime, formatNumber } from './format';
 import { render } from './render';
 import { parser } from './parser';
+import { getPreset, isString } from './utils';
 
 interface I18nOptions {
   language: string;
@@ -28,8 +29,8 @@ export function createI18n(options: I18nOptions): { i18n: I18n, subscribe: Subsc
 
   const i18n: I18n = {
     language: options.language,
-    locales: options.locales || {},
-    presets: options.presets || {},
+    locales: { ...options.locales },
+    presets: { ...options.presets },
 
     setLanguage: (value: string): I18n => {
       i18n.language = value;
@@ -50,13 +51,17 @@ export function createI18n(options: I18nOptions): { i18n: I18n, subscribe: Subsc
     },
     formatNumber: (value: number, options?: string | Readonly<NumberOptions>): string => {
       const optionsValue: Readonly<NumberOptions> | undefined =
-        options && typeof options !== 'string' ? options : i18n.presets.number?.[options || 'default'];
+        (!options || isString(options))
+          ? getPreset(i18n.presets.number, options)
+          : options;
       return formatNumber(value, i18n.language, optionsValue);
     },
     formatDateTime: (date: number | string | Date, options?: string | Readonly<DateTimeOptions>): string => {
       const dateValue = typeof date === 'string' ? new Date(date) : date;
       const optionsValue: Readonly<DateTimeOptions> | undefined =
-        options && typeof options !== 'string' ? options : i18n.presets.dateTime?.[options || 'default'];
+        (!options || isString(options))
+          ? getPreset(i18n.presets.dateTime, options)
+          : options;
       return formatDateTime(dateValue, i18n.language, optionsValue);
     },
   };

@@ -34,22 +34,22 @@ function splitMessage(
     .filter(val => val !== '')
     .map((val: string) => {
       const m = val.match(new RegExp(`^${VAR_KEY}(\\d+?)$`));
-      if (!m || !m[1]) return val;
-
-      // TODO: fix types
-      return mapFunc(matches[m[1] as string], val);
+      return m && m[1] ? mapFunc(matches[m[1]], val) : val;
     });
 }
 
-// TODO: fix types
 function trimArray(arr: Template): Template {
-  return arr.reduceRight((acc: any[], item) => {
-    return (!item && !acc.length) ? acc : [item, ...acc];
-  }, []) as Template;
+  return arr.reduceRight((acc: unknown[], item) => (
+    (!item && !acc.length) ? acc : [item, ...acc]
+  ), []) as Template;
 }
 
 function isRuleMatch(match: RegExpMatchArray | null): match is [string, Intl.LDMLPluralRule, string] {
   return match !== null && match.length === 3;
+}
+
+function getTemplate(match: RegExpMatchArray | null): (false | [string, string?, string?]) {
+  return match !== null && [...match].filter(Boolean).slice(1) as [string, string?, string?];
 }
 
 function parsePlural(value: string): Readonly<TemplatePlural> {
@@ -64,6 +64,12 @@ function parsePlural(value: string): Readonly<TemplatePlural> {
     }, {});
 }
 
+function parseValue(type?: TemplateType, value?: string): string | Readonly<TemplatePlural> | undefined {
+  return type === TemplateType.plural && value
+    ? parsePlural(value)
+    : value;
+}
+
 export function parser(message: string): TemplateMessage {
   const result: TemplateMessage = [message]
     .map(value => {
@@ -71,12 +77,8 @@ export function parser(message: string): TemplateMessage {
       if (!matches) return value;
 
       return splitMessage(value, matches, (match: string, val: string) => {
-        const tpl = match.match(TAG_ITEM_REGEXP);
-        if (!tpl) return val;
-
-        // TODO: fix types
-        const [key, text] = [...tpl].filter(Boolean).slice(1) as [string, string | undefined];
-        return trimArray([key, TemplateType.tag, text && parser(text)]);
+        const tpl = getTemplate(match.match(TAG_ITEM_REGEXP));
+        return tpl ? trimArray([tpl[0], TemplateType.tag, tpl[1] && parser(tpl[1])]) : val;
       });
     })
     .map(value => {
@@ -86,17 +88,11 @@ export function parser(message: string): TemplateMessage {
       if (!matches) return value;
 
       return splitMessage(value, matches, (match: string, val: string) => {
-        const tpl = match.match(TPL_ITEM_REGEXP);
+        const tpl = getTemplate(match.match(TPL_ITEM_REGEXP));
         if (!tpl) return val;
 
-        // TODO: fix types
-        const [name, type, value] = [...tpl].filter(Boolean).slice(1) as [string, string?, string?];
-
-        return trimArray([
-          name,
-          getFormatType(type),
-          type === 'plural' && value ? parsePlural(value) : value,
-        ]);
+        const type = getFormatType(tpl[1]);
+        return trimArray([tpl[0], type, parseValue(type, tpl[2])]);
       });
     })
     .flat();
