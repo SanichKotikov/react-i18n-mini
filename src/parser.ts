@@ -1,3 +1,4 @@
+import { isString } from './utils';
 import type { Template, TemplateMessage, TemplatePlural } from './types';
 import { TemplateType } from './types';
 
@@ -72,30 +73,37 @@ function parseValue(type?: TemplateType, value?: string): string | Readonly<Temp
 
 export function parser(message: string): TemplateMessage {
   const result: TemplateMessage = [message]
-    .map(value => {
+    .reduce<(string | Template)[]>((acc, value) => {
       const matches = value.match(TAG_ALL_REGEXP);
-      if (!matches) return value;
 
-      return splitMessage(value, matches, (match: string, val: string) => {
-        const tpl = getTemplate(match.match(TAG_ITEM_REGEXP));
-        return tpl ? trimArray([tpl[0], TemplateType.tag, tpl[1] && parser(tpl[1])]) : val;
-      });
-    })
-    .map(value => {
-      if (typeof value !== 'string') return value;
+      acc.push(
+        ...(matches
+          ? splitMessage(message, matches, (match: string, val: string) => {
+            const tpl = getTemplate(match.match(TAG_ITEM_REGEXP));
+            return tpl ? trimArray([tpl[0], TemplateType.tag, tpl[1] && parser(tpl[1])]) : val;
+          })
+          : [value]),
+      );
 
-      const matches = value.match(TPL_ALL_REGEXP);
-      if (!matches) return value;
+      return acc;
+    }, [])
+    .reduce<(string | Template)[]>((acc, value) => {
+      const matches = isString(value) && value.match(TPL_ALL_REGEXP);
 
-      return splitMessage(value, matches, (match: string, val: string) => {
-        const tpl = getTemplate(match.match(TPL_ITEM_REGEXP));
-        if (!tpl) return val;
+      acc.push(
+        ...(matches
+          ? splitMessage(value as string, matches, (match: string, val: string) => {
+            const tpl = getTemplate(match.match(TPL_ITEM_REGEXP));
+            if (!tpl) return val;
 
-        const type = getFormatType(tpl[1]);
-        return trimArray([tpl[0], type, parseValue(type, tpl[2])]);
-      });
-    })
-    .flat();
+            const type = getFormatType(tpl[1]);
+            return trimArray([tpl[0], type, parseValue(type, tpl[2])]);
+          })
+          : [value]),
+      );
+
+      return acc;
+    }, []);
 
   return (result.length === 1 && typeof result[0] === 'string') ? result[0] : result;
 }

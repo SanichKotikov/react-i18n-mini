@@ -11,7 +11,7 @@ export type TemplatePlural = Partial<Record<Intl.LDMLPluralRule | '=0', Template
 export type Template = [name: string, type?: TemplateType, options?: string | TemplatePlural | TemplateMessage];
 export type TemplateMessage = string | readonly  (string | Template)[];
 
-export type I18nRenderValue = (child: string) => ReactChild | ReactFragment;
+export type I18nRenderValue = (child?: ReactFragment | string) => ReactChild | ReactFragment;
 export type I18nValue = number | string | Date | I18nRenderValue;
 
 export type NumberStyle = 'decimal' | 'currency' | 'percent' | 'unit';

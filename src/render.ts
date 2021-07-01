@@ -24,16 +24,12 @@ function format(
     return formatDateTime(new Date(value), locale, getPreset(presets.dateTime, options));
 
   else if (type === TemplateType.tag) {
-    const child = isString(options) ? options : '';
-    if (isFunc(value)) return value(child);
-
-    return createElement(
-      isString(value) ? value : id,
-      { key },
-      isString(options)
-        ? render(locale, presets, options, props)
-        : undefined,
-    );
+    const child = isString(options) || Array.isArray(options)
+      ? render(locale, presets, options, props)
+      : undefined;
+    return isFunc(value)
+      ? value(child)
+      : createElement(isString(value) ? value : id, { key }, child);
   }
 
   else if (type === TemplateType.plural && isNumber(value) && isPlural(options)) {

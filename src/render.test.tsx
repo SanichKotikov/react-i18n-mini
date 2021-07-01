@@ -56,7 +56,7 @@ describe('render', () => {
     expect(render(LANG, PRESETS, MSG2, { count: 2 })).toBe('You have 2 items.');
   });
 
-  it('should render tags and components', function() {
+  it('should render tags and components and plural', function() {
     const MSG1: TemplateMessage = ['First line.', ['br', TemplateType.tag], 'Second line.'];
     const MSG2: TemplateMessage = [
       'First line.',
@@ -64,6 +64,13 @@ describe('render', () => {
       'Second line with ',
       ['b', TemplateType.tag, 'highlighted text'],
       '.',
+    ];
+    const MSG3: TemplateMessage = [
+      'Are you sure you want to delete ',
+      ['b', TemplateType.tag, [['count']]],
+      ' ',
+      ['count', TemplateType.plural, { one: 'reply', other: 'replies' }],
+      '?',
     ];
 
     function Comp({ message, options }: { message: TemplateMessage, options?: I18nValues }) {
@@ -83,6 +90,15 @@ describe('render', () => {
         'Second line with ',
         { type: 'b', props: {}, children: ['highlighted text'] },
         '.',
+      ]);
+
+    expect(TestRenderer.create(<Comp message={MSG3} options={{ count: 1 }} />).toJSON()?.['children'])
+      .toEqual([
+        'Are you sure you want to delete ',
+        { type: 'b', props: {}, children: ['1'] },
+        ' ',
+        'reply',
+        '?',
       ]);
   });
 });

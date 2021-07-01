@@ -63,6 +63,14 @@ describe('parser', () => {
       ['b', TemplateType.tag, [['count']]],
       ' messages',
     ]);
+    expect(parser('Are you sure you want to delete <b>{count}</b> {count, plural, one {reply} other {replies}}?'))
+      .toEqual<TemplateMessage>([
+        'Are you sure you want to delete ',
+        ['b', TemplateType.tag, [['count']]],
+        ' ',
+        ['count', TemplateType.plural, { one: 'reply', other: 'replies' }],
+        '?',
+      ]);
   });
 
   it('should parse tags & plurals', function() {
