@@ -71,14 +71,12 @@ describe('core', () => {
 
   it('should translate', function() {
     const lang = 'ru';
-    const id = 'test';
-
     const message = 'Test string';
     const translated = 'Тестовая строка';
 
-    const { i18n } = createI18n({ language: 'en', locales: { [lang]: { [id]: translated } } });
-    expect(i18n.t({ id, message })).toBe(message);
+    const { i18n } = createI18n({ language: 'en', locales: { [lang]: { [message]: translated } } });
+    expect(i18n.t({ id: message, message })).toBe(message);
     i18n.setLanguage(lang);
-    expect(i18n.t({ id, message })).toBe(translated);
+    expect(i18n.t({ message })).toBe(translated);
   });
 });

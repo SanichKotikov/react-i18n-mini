@@ -9,8 +9,8 @@ export interface NumericProps extends Omit<NumberOptions, 'style'> {
   numberStyle?: NumberStyle;
 }
 
-export const Numeric = memo<Readonly<NumericProps>>(
-  function Numeric({ value, preset, numberStyle, ...props }) {
+export const Numeric = memo(
+  function Numeric({ value, preset, numberStyle, ...props }: Readonly<NumericProps>) {
     const { i18n } = useI18n();
     const options = { ...props, style: numberStyle };
 

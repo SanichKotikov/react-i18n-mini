@@ -8,8 +8,8 @@ export interface DateTimeProps extends DateTimeOptions {
   preset?: string;
 }
 
-export const DateTime = memo<Readonly<DateTimeProps>>(
-  function DateTime({ date, preset, ...options }) {
+export const DateTime = memo(
+  function DateTime({ date, preset, ...options }: Readonly<DateTimeProps>) {
     const { i18n } = useI18n();
 
     return (

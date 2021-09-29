@@ -43,7 +43,7 @@ export interface I18nLocales {
 }
 
 export interface I18nMessage {
-  id: string;
+  id?: string;
   message: string;
 }
 

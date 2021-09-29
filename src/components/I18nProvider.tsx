@@ -9,7 +9,7 @@ interface Props {
   children: ReactChild | ReactFragment;
 }
 
-export const I18nProvider = memo<Props>(function I18nProvider({ i18n, subscribe, children }) {
+export const I18nProvider = memo(function I18nProvider({ i18n, subscribe, children }: Readonly<Props>) {
   const [value, update] = useState({ i18n });
   useEffect(() => subscribe(() => update({ i18n })), [i18n, subscribe]);
 
