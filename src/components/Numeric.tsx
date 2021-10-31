@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
+import { isEmpty } from 'i18n-mini/lib/utils';
+import type { NumberOptions, NumberStyle } from 'i18n-mini/lib/types';
 import { useI18n } from '../context';
-import { isEmpty } from '../utils';
-import type { NumberOptions, NumberStyle } from '../types';
 
 export interface NumericProps extends Omit<NumberOptions, 'style'> {
   value: number;

@@ -1,9 +1,9 @@
 # react-i18n-mini
 
-A tiny (~1.88 kB) internationalization library for React.
+A tiny (~1.93 kB) internationalization library for React.
 
 ```bash
-npm i -S react-i18n-mini
+npm i react-i18n-mini
 ```
 
 ## Usage

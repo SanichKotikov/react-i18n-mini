@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
+import { isEmpty } from 'i18n-mini/lib/utils';
+import type { DateTimeOptions } from 'i18n-mini/lib/types';
 import { useI18n } from '../context';
-import { isEmpty } from '../utils';
-import type { DateTimeOptions } from '../types';
 
 export interface DateTimeProps extends DateTimeOptions {
   date: number | string | Date;

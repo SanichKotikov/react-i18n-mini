@@ -20,7 +20,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
     "importsNotUsedAsValues": "error",
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": true,
     "removeComments": true,
     "jsx": "react"
@@ -29,8 +29,6 @@
     "src"
   ],
   "exclude": [
-    "node_modules",
-    "**/*.test.ts",
-    "**/*.test.tsx"
+    "node_modules"
   ]
 }

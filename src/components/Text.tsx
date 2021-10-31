@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
+import type { I18nMessage, I18nValues } from 'i18n-mini/lib/types';
 import { useI18n } from '../context';
-import type { I18nMessage, I18nValues } from '../types';
 
 export type TextProps = I18nMessage & I18nValues;
 

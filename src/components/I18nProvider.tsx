@@ -1,6 +1,7 @@
 import type { ReactChild, ReactFragment } from 'react';
 import React, { memo, useEffect, useState } from 'react';
-import type { I18n, SubscribeFunc } from '../types';
+import type { SubscribeFunc } from 'i18n-mini/lib/types';
+import type { I18n } from '../types';
 import { I18nContext } from '../context';
 
 interface Props {
