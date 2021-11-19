@@ -1,6 +1,6 @@
 # react-i18n-mini
 
-A tiny (~1.93 kB) internationalization library for React.
+A tiny (~2.39 kB) internationalisation library for React.
 
 ```bash
 npm i react-i18n-mini
@@ -75,7 +75,7 @@ function SomeComp() {
 
   return (
     <div>
-      <h1>{i18n.t({ message: "Page title" })}</h1>
+      <h1>{i18n.t('Page title')}</h1>
       <div>{i18n.formatNumber(99999.9, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
       <div>{i18n.formatDateTime(new Date(), { day: '2-digit', month: 'short' })}</div>
     </div>
@@ -89,7 +89,7 @@ function SomeComp() {
 import { useI18n, defineMessages } from 'react-i18n-mini';
 
 const messages = defineMessages({
-  title: { message: "Page title" },
+  title: { message: 'Page title' },
 });
 
 function SomeComp() {
