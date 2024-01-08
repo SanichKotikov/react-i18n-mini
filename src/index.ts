@@ -1,6 +1,7 @@
 import type { ReactFragment } from 'react';
-import { createElement } from 'react';
+import { createElement, Children, Fragment } from 'react';
 import type { I18nOptions } from 'i18n-mini';
+import type { I18nMessage, I18nValues } from 'i18n-mini/lib/types';
 import { createI18n as create } from 'i18n-mini';
 
 export { useI18n } from './context';
@@ -18,9 +19,23 @@ export type { DateTimeProps } from './components/DateTime';
 export type { I18n } from './types';
 
 function formatTag(tag: string, child: string | string[] | undefined) {
-  return createElement(tag, { key: tag }, child);
+  return createElement(tag, null, child);
 }
 
 export function createI18n(options: Omit<I18nOptions, 'formatTag'>) {
-  return create<string | ReactFragment>({ ...options, formatTag });
+  const { i18n, subscribe } = create<string | ReactFragment>({ ...options, formatTag });
+
+  return {
+    i18n: {
+      ...i18n,
+      t: (message: string | I18nMessage, values?: Readonly<I18nValues>) => {
+        const result = i18n.t(message, values);
+
+        return Array.isArray(result)
+          ? Children.map(result, (child, index) => createElement(Fragment, { key: index }, child))
+          : result;
+      },
+    },
+    subscribe,
+  };
 }
