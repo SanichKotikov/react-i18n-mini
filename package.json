@@ -1,6 +1,6 @@
 {
   "name": "react-i18n-mini",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Internationalisation for React",
   "main": "lib/index.js",
   "module": "lib/index.js",
